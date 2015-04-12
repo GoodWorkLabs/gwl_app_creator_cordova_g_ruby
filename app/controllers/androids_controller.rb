@@ -15,7 +15,7 @@ Zip::ZipFile.open(www_zip_file_data) { |zip_file|
    logger.info f
    logger.info '-----------------------------------'
    FileUtils.mkdir_p(File.dirname(f_path))
-   zip_file.extract(f, f_path)  unless File.exist?(f_path)
+   zip_file.extract(f, f_path) true
  }
 }
   # system("cd ~/appcreator_apps/#{folder_name} && cordova build android")
