@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link href="assets/ratchet/css/ratchet.css" rel="stylesheet">
+    <link href="assets/css/jquery.mobile-1.4.5.css" rel="stylesheet">
+    <link href="assets/css/pageslider.css" rel="stylesheet">
+</head>
+<body>
+
+</script>
+    <div data-role="page" id="landingpage" class="ui-responsive-panel">
+  <div data-role="header" data-tap-toggle="false" data-position="fixed" style="overflow:hidden;">
+    <h1 id="app-name-holder">
+      <script id="app-name-template" type="text/x-handlebars-template">
+					{{basic_info.name}}
+				</script> 
+    </h1>
+    <!-- <a href="#" data-icon="gear" class="ui-btn-right">Options</a> --> 
+    <a href="#nav-panel" data-icon="bars" data-iconpos="notext">Menu</a> 
+    <!--<a href="#" data-icon="gear" data-iconpos="notext" data-direction="reverse" class="ui-btn-right navbar-ico">Options</a>--> 
+  </div>
+  <!-- /header -->
+  
+  <div data-role="content" class="ui-content" id="page-content">
+    <div id="page1-content-holder"></div>
+    <script id="page1-content-template" type="text/x-handlebars-template">
+				<div>
+					<img src="{{banner_image}}" width="100%">
+				</div>
+					
+				<p>{{text_content}}</p>
+			</script> 
+    <script id="page2-contactus-template" type="text/x-handlebars-template">
+				<div>
+					<img src="{{banner_image}}" width="100%">
+				</div>
+				<p><strong>Email :</strong> {{contect_email}}</p>
+				<p><strong>Phone :</strong> {{phone}}</p>
+			</script> 
+    <script id="page3-location-template" type="text/x-handlebars-template">
+				
+					<div id="map-canvas" style="width:100%;height: 210px;">
+						
+					</div>
+				
+				<p><strong>Address :</strong> {{address}}</p>
+				<p><strong>City :</strong> {{city}}</p>
+				<p><strong>Zipcode :</strong> {{zipcode}}</p>
+			</script> 
+  </div>
+  <!-- /panel -->
+  <div data-role="footer" id="footer-menu" data-tap-toggle="false" data-position="fixed" style="overflow:hidden;"></div>
+  <script id="menus-template" type="text/x-handlebars-template">
+	<div data-role="navbar" id="menu-holder" class="ui-navbar" role="navigation">
+			<ul>
+				{{#each menus}}
+				<li><a href="#" data-icon="star" id="{{menu_unique_id}}">{{title}}</a></li>
+				{{/each}}
+			</ul>
+		</div>
+	</script>
+  <!-- /footer -->
+  <div data-role="panel" data-display="overlay" data-theme="b" id="nav-panel">
+    <ul data-role="listview" id="leftpanel">
+      <li data-icon="delete"><a href="#" data-rel="close">Close menu</a></li>
+    </ul>
+  </div>
+  <script id="extra-menus-template" type="text/x-handlebars-template">
+      {{#each lefpanel}}
+      <li><a href="#{{title}}">{{title}}</a></li>
+      {{/each}}
+	  </script>
+</div>
+<script id="extra-content-template" type="text/x-handlebars-template">
+				<div>
+					<img src="{{banner_image}}" width="100%">
+				</div>
+					
+				<p>{{text_content}}</p>
+			</script>
+     <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js">
+    </script>
+    <!--<script src="cordova.js"></script>-->
+<script src="lib/fastclick.js"></script>
+<script src="lib/handlebars.js"></script>
+<script src="lib/jquery.js"></script>
+<script src="lib/pageslider.js"></script>
+<script src="lib/router.js"></script>
+<script src="lib/jquery.mobile-1.4.5.js"></script>
+    <!-- <script src="<?php echo base_url();?>js/application.js"></script>  -->
+
+<script type="text/javascript">
+//var appid ="<?php echo $app_id;?>";
+    
+    var api_url = 'http://localhost/appscreator/appcontrol/firstTemplate/3';//'http://[host]/[project]/appcontrol/firstTemplate/[appid]';//+appid;
+    //console.log(api_url);
+
+$( document ).ready(function() {
+	$.ajax({
+	  url: api_url,
+	  cache: false
+	}).done(function(json) {
+		window.context = JSON.parse(json);
+		//console.log(context);
+		
+		// This below code will update all main content of page1
+		window.pagesource = $("#page1-content-template").html();
+		window.pagetemplate = Handlebars.compile(pagesource);
+		var html = pagetemplate(context.menus[0]);
+		$(html).appendTo("#page1-content-holder");
+		
+		// Thios below code will update the body color
+		$('[data-role="header"]').attr('style', 'background-image: none; background-color: '+context.basic_info.color+';text-shadow: 0px 0px;');
+		
+		$('body p').attr('style', 'color: '+context.basic_info.color);
+
+		// This below code will update all the bottom menus
+		var source = $("#menus-template").html();
+		var template = Handlebars.compile(source);
+		var footerpanel_object={};
+		footerpanel_object['menus']=[];
+		for(i=0;i<3;i++){
+			footerpanel_object['menus'][i]=context['menus'][i];
+		}
+		var html = template(footerpanel_object);
+		$(html).appendTo("#footer-menu");
+		
+		var source = $("#extra-menus-template").html();
+		var template = Handlebars.compile(source);
+		var lefpanel_object={};
+		lefpanel_object['lefpanel']=[];
+		var inc_leftpanel=0;
+		for(i=3;i<context['menus'].length;i++){
+			lefpanel_object['lefpanel'][inc_leftpanel]=context['menus'][i];
+			//console.log(context['menus'][i]);
+			var dynamicpages='<div data-role="page" id="'+context['menus'][i]['title']+'">\
+  <div data-role="header" data-position="fixed" style="background-image: none; background-color: '+context.basic_info.color+'">\
+    <h1>'+context['menus'][i]['title']+'</h1>\
+    <a href="#landingpage" data-icon="back" data-iconpos="notext">Back</a>\
+  </div>\
+  <!-- /header -->\
+  <div data-role="content" class="ui-content jqm-content">\
+    <p>This is just a landing page.</p>\
+     </div>\
+  <!-- /content --> \
+</div>';
+			$('body').append(dynamicpages);
+			var extra_source=$('#extra-content-template').html();
+			var extra_template = Handlebars.compile(extra_source);
+			var html = extra_template(context['menus'][i]);
+			$('#'+context['menus'][i]['title']+'>.ui-content').html(html);
+			inc_leftpanel++;
+		}
+		var html = template(lefpanel_object);
+		$(html).appendTo("#leftpanel");
+		$('#leftpanel').listview('refresh');
+		//$('body').append(dynamicpages);
+		
+		
+		
+		
+		$('#menu-holder').navbar();
+		$('#menu-holder>ul>li>a').attr('style', 'background-image: none; background-color: '+context.basic_info.color+';text-shadow: 0px 0px;');
+		
+		//$('#menu-holder').enhanceWithin();
+		// $('#menu-holder').html(html).enhanceWithin();
+		
+		// This below code will update the app name on the header nav
+		var source = $("#app-name-template").html();
+		var template = Handlebars.compile(source);
+		var html = template(context);
+		$('#app-name-holder').html(html);
+		
+		
+		var source = $("#page3-location-template").html();
+		var template = Handlebars.compile(source);
+		var html = template(context.menus[3]);
+		$("#Location").find('[data-role="content"]').html(html);
+		var value=context['menus'][3];
+		if(value.address!='' && value.city!='' && value.zipcode!=''){
+			var geocoder;
+			var map;
+			var query = value.address+','+value.city+','+value.zipcode;
+			function initialize() {
+			  geocoder = new google.maps.Geocoder();
+			  var mapOptions = {
+				zoom:16
+			  }
+			  map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+			  codeAddress();
+			}
+
+			function codeAddress() {
+			  var address = query;
+			  
+			  geocoder.geocode( { 'address': address}, function(results, status) {
+				if (status == google.maps.GeocoderStatus.OK) {
+				  map.setCenter(results[0].geometry.location);
+				  var marker = new google.maps.Marker({
+					  map: map,
+					  position: results[0].geometry.location
+				  });
+				} else {
+				  alert('Geocode was not successful for the following reason: ' + status);
+				}
+			  });
+			}
+			initialize();
+
+			google.maps.event.addDomListener(window, 'load', initialize);
+		}
+	});
+	
+$("#footer-menu").on('click','#menu-holder>ul>li>a',function(){
+	var tabId = $(this).attr('id');
+	$.each(context.menus,function(index,value){
+		if(value.menu_unique_id==tabId){
+
+			if(value.template_id == 2){
+				var source = $("#page2-contactus-template").html();
+				var template = Handlebars.compile(source);
+				var html = template(context.menus[index]);
+		    	$("#page1-content-holder").html(html);
+			}else if(value.template_id == 3){
+				
+				
+			}else{
+				var html = pagetemplate(context.menus[index]);
+		    	$("#page1-content-holder").html(html);
+			}
+			
+		}
+		
+	});
+	
+});
+});
+</script>
+</body>
+</html>
