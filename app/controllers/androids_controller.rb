@@ -9,7 +9,7 @@ class AndroidsController < ApplicationController
   system("cd ~/appcreator_apps/#{folder_name}")
 Zip::ZipFile.open(www_zip_file_data) { |zip_file|
    zip_file.each { |f|
-   f_path=File.join("~/appcreator_apps/#{folder_name}", f.name)
+   f_path=File.join("/home/devops/appcreator_apps/#{folder_name}", f.name)
    logger.info f_path
    logger.info '-----------------------------------'
    logger.info f
