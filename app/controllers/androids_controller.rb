@@ -3,7 +3,7 @@ class AndroidsController < ApplicationController
   www_zip_file_data = params[:filedata].path
   folder_name = Digest::MD5.hexdigest(Time.now.to_s)
   system("cd ~/appcreator_apps && cordova create #{folder_name}")
-  system("cd ~/appcreator_apps/#{folder_name} && cordova platform add android && cordova plugin add org.apache.cordova.device && cordova plugin add org.apache.cordova.console")
+  system("cd ~/appcreator_apps/#{folder_name} && cordova platform add android && cordova plugin add org.apache.cordova.device && cordova plugin add org.apache.cordova.console && cordova plugin add https://github.com/phonegap-build/PushPlugin.git")
   
   #system("rm -rf ~/appcreator_apps/#{folder_name}/www")
   system("cd ~/appcreator_apps/#{folder_name}")
