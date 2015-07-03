@@ -19,7 +19,7 @@ class AndroidsController < ApplicationController
         zip_file.extract(f, f_path) {true}
       }
     }
-    system("cd ~/appcreator_apps/#{folder_name} && cordova build android")
+    system("chmod 777 -R ~/appcreator_apps/#{folder_name} && cd ~/appcreator_apps/#{folder_name} && cordova build android")
   
     render json: {apk_path: "~/appcreator_apps/#{folder_name}/platforms/android/ant-build/MainActivity-debug.apk"}
   end
