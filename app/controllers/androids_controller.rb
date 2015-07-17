@@ -5,7 +5,7 @@ class AndroidsController < ApplicationController
     app_name = params[:appname]
     folder_name = Digest::MD5.hexdigest(Time.now.to_s)
     system("cd /home/devops/appcreator_apps && cordova create #{folder_name} com.goodappz.#{app_name} #{app_name}")
-    system("cd /home/devops/appcreator_apps/#{folder_name} && cordova platform add android && cordova plugin add org.apache.cordova.device && cordova plugin add org.apache.cordova.console && cordova plugin add https://github.com/phonegap-build/PushPlugin.git")
+    system("cd /home/devops/appcreator_apps/#{folder_name} && cordova platform add android && cordova plugin add org.apache.cordova.device && cordova plugin add org.apache.cordova.console && cordova plugin add https://github.com/phonegap-build/PushPlugin.git && cordova plugin add org.apache.cordova.network-information")
     system("chmod 777 /home/devops/appcreator_apps/#{folder_name}")
     
     system("cd /home/devops/appcreator_apps/#{folder_name}")
