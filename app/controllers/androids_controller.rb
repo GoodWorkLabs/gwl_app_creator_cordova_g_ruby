@@ -39,6 +39,7 @@ class AndroidsController < ApplicationController
     
     system("cd /home/devops/appcreator_apps/#{folder_name} && cordova build android")
   
-    render json: {apk_path: "/home/devops/appcreator_apps/#{folder_name}/platforms/android/ant-build/MainActivity-debug.apk"}
+    # render json: {apk_path: "/home/devops/appcreator_apps/#{folder_name}/platforms/android/ant-build/MainActivity-debug.apk"}
+    render json: {apk_path: "http://apks.goodappz.com/#{folder_name}/platforms/android/ant-build/MainActivity-debug.apk"}
   end
 end
