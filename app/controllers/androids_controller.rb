@@ -42,7 +42,7 @@ class AndroidsController < ApplicationController
   
     render json: {
       apk_path: "/home/devops/appcreator_apps/#{folder_name}/platforms/android/ant-build/MainActivity-debug.apk",
-      apk_http_path: "http://apks.goodappz.com/androids/#{folder_name}/platforms/android/ant-build/MainActivity-debug.apk"
+      apk_http_path: "http://apks.goodappz.com/androids/#{folder_name}"
     }
   end
   
