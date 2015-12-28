@@ -48,7 +48,7 @@ class AndroidsController < ApplicationController
   
   # GET  /androids/:id(.:format)
   def show
-    folder_name = params[:folder_name]
+    folder_name = params[:id]
 
     send_file("/home/devops/appcreator_apps/#{folder_name}/platforms/android/ant-build/MainActivity-debug.apk", filename: "GoodAppz.apk")
   end
