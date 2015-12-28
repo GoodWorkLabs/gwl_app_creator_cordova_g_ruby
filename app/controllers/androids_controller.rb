@@ -46,10 +46,11 @@ class AndroidsController < ApplicationController
     }
   end
   
-  # GET  /androids/:id(.:format)
+  # GET  /androids/:id?app_name=some_app_name(.:format)
   def show
     folder_name = params[:id]
+    app_name = params[:app_name] || "GoodAppz"
 
-    send_file("/home/devops/appcreator_apps/#{folder_name}/platforms/android/ant-build/MainActivity-debug.apk", filename: "GoodAppz.apk")
+    send_file("/home/devops/appcreator_apps/#{folder_name}/platforms/android/ant-build/MainActivity-debug.apk", filename: "#{app_name}.apk")
   end
 end
