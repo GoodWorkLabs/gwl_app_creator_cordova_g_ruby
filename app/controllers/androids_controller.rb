@@ -1,4 +1,5 @@
 class AndroidsController < ApplicationController
+  # POST  /androids/:id(.:format)
   def create
     www_zip_file_data = params[:filedata].path
     icons_zip_file_data = params[:icondata].path
@@ -41,7 +42,14 @@ class AndroidsController < ApplicationController
   
     render json: {
       apk_path: "/home/devops/appcreator_apps/#{folder_name}/platforms/android/ant-build/MainActivity-debug.apk",
-      apk_http_path: "http://apks.goodappz.com/#{folder_name}/platforms/android/ant-build/MainActivity-debug.apk"
+      apk_http_path: "http://apks.goodappz.com/androids/#{folder_name}/platforms/android/ant-build/MainActivity-debug.apk"
     }
+  end
+  
+  # GET  /androids/:id(.:format)
+  def show
+    folder_name = params[:folder_name]
+
+    send_file("/home/devops/appcreator_apps/#{folder_name}/platforms/android/ant-build/MainActivity-debug.apk", filename: "GoodAppz.apk")
   end
 end
