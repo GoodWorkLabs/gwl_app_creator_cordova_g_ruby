@@ -34,7 +34,7 @@ class AndroidsController < ApplicationController
     # Change config.xml stuffs for call button support
     file_name = "/home/devops/appcreator_apps/#{folder_name}/config.xml"
     xml_val = File.read(file_name)
-    new_contents = xml_val.gsub('</widget>', '<access origin="tel:*" launch-external="yes" /><access origin="mailto:*" launch-external="yes" /></widget>')
+    new_contents = xml_val.gsub('</widget>', '<access origin="tel:*" launch-external="yes" /><access origin="mailto:*" launch-external="yes" /><preference name="Orientation" value="portrait" /></widget>')
     # To write changes to the file, use:
     File.open(file_name, "w") {|file| file.puts new_contents }
     
